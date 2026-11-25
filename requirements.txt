@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+python-dotenv
+pydantic
+pydantic[email]
+motor
+langchain
+langchain-community
+langchain-core
+langchain-groq
+langchain-google-genai
+langchain-text-splitters
+faiss-cpu
+pypdf
+unstructured
