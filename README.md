@@ -1,118 +1,73 @@
-# AWKUM Chatbot
+# React + TypeScript + Vite
 
-This project features a Python backend built with FastAPI and a modern React frontend powered by Vite.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 📋 Prerequisites
+Currently, two official plugins are available:
 
-Before running the application, make sure you have the following installed on your system:
-- [Python 3.10+](https://www.python.org/downloads/)
-- [Node.js 18+](https://nodejs.org/)
-- [Git](https://git-scm.com/)
-- [MongoDB](https://www.mongodb.com/try/download/community) (Make sure the MongoDB service is running locally or provide a connection URI in `.env`)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
----
+## React Compiler
 
-## ⚙️ Environment Variables
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-Create a file named `.env` in the root folder (where `main.py` is located) and configure it based on your external services (like Google GenAI, Groq, database string, etc.):
+## Expanding the ESLint configuration
 
-```env
-# Example .env file mapping
-GROQ_API_KEY=your_groq_api_key
-GOOGLE_API_KEY=your_google_api_key
-MONGO_URI=mongodb://localhost:27017
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
----
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-## 🐧 Setup on Linux (Ubuntu / Debian)
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-### 1. Backend Setup
-
-Open a terminal and run the following commands:
-
-```bash
-# 1. Navigate to the root directory of the project
-cd /path/to/Chatbot
-
-# 2. Create a Python virtual environment
-python3 -m venv venv
-
-# 3. Activate the virtual environment
-source venv/bin/activate
-
-# 4. Install backend dependencies
-pip install -r requirements.txt
-
-# 5. Start the backend server
-uvicorn main:app --reload
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-The FastAPI backend will now be available at: **http://127.0.0.1:8000**
-
-### 2. Frontend Setup
-
-Open a **new** terminal window and run:
-
-```bash
-# 1. Navigate to the frontend directory
-cd /path/to/Chatbot/frontend
-
-# 2. Install Node dependencies
-npm install
-
-# 3. Start the Vite development server
-npm run dev
-```
-The React frontend will be available at: **http://localhost:5173** (or the port specified in your terminal).
-
----
-
-## 🪟 Setup on Windows
-
-### 1. Backend Setup
-
-Open **Command Prompt** or **PowerShell** as an administrator (if required) and run:
-
-```cmd
-:: 1. Navigate to the root folder (adjust path accordingly)
-cd path\to\Chatbot
-
-:: 2. Create a Python virtual environment
-python -m venv venv
-
-:: 3. Activate the virtual environment
-.\venv\Scripts\activate
-
-:: 4. Install backend dependencies
-pip install -r requirements.txt
-
-:: 5. Start the backend server
-uvicorn main:app --reload
-```
-The FastAPI backend will now be available at: **http://127.0.0.1:8000**
-
-### 2. Frontend Setup
-
-Open a **new** Command Prompt or PowerShell window:
-
-```cmd
-:: 1. Navigate to the frontend directory
-cd path\to\Chatbot\frontend
-
-:: 2. Install Node dependencies
-npm install
-
-:: 3. Start the Vite development server
-npm run dev
-```
-The React frontend will be available at: **http://localhost:5173**
-
----
-
-## 📖 API Documentation
-
-FastAPI automatically generates interactive API documentation. While the backend is running, visit:
-- **Swagger UI:** `http://127.0.0.1:8000/docs`
-- **ReDoc:** `http://127.0.0.1:8000/redoc`
-
-Happy Coding! 🚀
